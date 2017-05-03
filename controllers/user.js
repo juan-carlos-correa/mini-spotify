@@ -2,6 +2,7 @@
 
 const bcrypt = require('bcrypt-nodejs')
 const User = require('../models/user')
+const jwt = require('../services/jwt')
 
 function saveUser (req, res) {
   const user = new User()
@@ -38,7 +39,7 @@ function loginUser (req, res) {
     bcrypt.compare(password, user.password, (err, check) => {
       if (err) return res.status(500).send({ message: 'Error al logearse' })
       if (!check) return res.status(404).send({ message: 'La contraseña es incorrecta' })
-      return res.status(200).send({ message: 'Bienvenido', user })
+      return res.status(200).send({ message: 'Bienvenido', token: jwt.createToken(user) })
     })
   })
 }
