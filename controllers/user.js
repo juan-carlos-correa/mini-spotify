@@ -21,11 +21,29 @@ function saveUser (req, res) {
     user.password = hash
     user.save((err, userStored) => {
       if (err) res.status(400).send({ message: 'error', err })
-      res.status(200).send({ message: 'ok', data: userStored })
+      res.status(200).send({ message: 'ok', userStored })
+    })
+  })
+}
+
+function loginUser (req, res) {
+  const params = req.body
+
+  let email = params.email.toLowerCase()
+  let password = params.password
+  User.findOne({ email }, (err, user) => {
+    if (err) return res.status(500).send({ message: 'Error en la petición' })
+    if (!user) return res.status(404).send({ message: 'El usuario no existe' })
+
+    bcrypt.compare(password, user.password, (err, check) => {
+      if (err) return res.status(500).send({ message: 'Error al logearse' })
+      if (!check) return res.status(404).send({ message: 'La contraseña es incorrecta' })
+      return res.status(200).send({ message: 'Bienvenido', user })
     })
   })
 }
 
 module.exports = {
-  saveUser
+  saveUser,
+  loginUser
 }
