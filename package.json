@@ -1,0 +1,38 @@
+{
+  "name": "mini-spotify",
+  "version": "1.0.0",
+  "description": "Mini spotify app hecha con stack MEAN\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[Dfullstack MEAN",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juan-carlos-correa/mini-spotify.git"
+  },
+  "keywords": [
+    "minispotify",
+    "angular",
+    "node",
+    "mongo"
+  ],
+  "author": "Juan Correa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juan-carlos-correa/mini-spotify/issues"
+  },
+  "homepage": "https://github.com/juan-carlos-correa/mini-spotify#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.1",
+    "connect-multiparty": "^2.0.0",
+    "express": "^4.15.2",
+    "jwt-simple": "^0.5.1",
+    "moment": "^2.18.1",
+    "mongoose": "^4.9.7",
+    "mongoose-pagination": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
