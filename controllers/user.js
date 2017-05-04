@@ -55,8 +55,23 @@ function updateUser (req, res) {
   })
 }
 
+function uploadImage (req, res) {
+  const userId = req.params.id
+  if (!req.files) return res.status(300).send({ message: 'No se seleccionó ninguna imagen' })
+  const filePath = req.files.image.path.split('\\')
+  const fileName = filePath[2]
+  const extension = fileName.split('.')
+
+  if (extension[1] !== 'png' && extension[1] !== 'jpg') return res.status(400).send({ message: 'La imagen debe ser png o jpeg' })
+  User.findByIdAndUpdate(userId, { imagen: fileName }, (err, userUpdated) => {
+    if (err) return res.status(500).send({ message: `Error al subir el avatar: ${err}` })
+    res.status(200).send({ message: 'Avatar actualizado', userUpdated })
+  })
+}
+
 module.exports = {
   saveUser,
   loginUser,
-  updateUser
+  updateUser,
+  uploadImage
 }
