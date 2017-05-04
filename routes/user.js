@@ -16,5 +16,6 @@ api.post('/prueba', mdAuth.ensureAuth, (req, res) => {
 })
 api.put('/update-user/:id', mdAuth.ensureAuth, userController.updateUser)
 api.post('/upload-image-user/:id', [mdAuth.ensureAuth, mdUpload], userController.uploadImage)
+api.get('/get-image-user/:imageFile', userController.getImageFile)
 
 module.exports = api
