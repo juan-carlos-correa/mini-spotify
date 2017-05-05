@@ -43,8 +43,20 @@ function getArtists (req, res) {
   })
 }
 
+function updateArtist (req, res) {
+  const artistId = req.params.id
+  const update = req.body
+
+  Artist.findByIdAndUpdate(artistId, update, (err, artistUpdated) => {
+    if (err) return res.status(500).send({ message: `Hubo un error al actualizar el artista: ${err}` })
+    if (!updateArtist) return res.status(400).send({ message: 'No se pudo actualizar el artista' })
+    res.status(200).send({ message: 'Artista actualizado', artistUpdated })
+  })
+}
+
 module.exports = {
   getArtist,
   saveArtist,
-  getArtists
+  getArtists,
+  updateArtist
 }
