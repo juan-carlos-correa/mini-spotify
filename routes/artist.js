@@ -7,5 +7,6 @@ const mdAuth = require('../middlewares/authenticated')
 
 api.get('/artist/:id', mdAuth.ensureAuth, ArtistController.getArtist)
 api.post('/artist', mdAuth.ensureAuth, ArtistController.saveArtist)
+api.get('/artists/:page?', mdAuth.ensureAuth, ArtistController.getArtists)
 
 module.exports = api

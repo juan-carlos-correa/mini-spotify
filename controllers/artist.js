@@ -2,6 +2,7 @@
 
 const path = require('path')
 const fs = require('fs')
+const mongoosePaginate = require('mongoose-pagination')
 
 const Artist = require('../models/artist')
 const Album = require('../models/album')
@@ -31,7 +32,19 @@ function saveArtist (req, res) {
   })
 }
 
+function getArtists (req, res) {
+  const page = req.params.page || 1
+  const itemsPerPage = 3
+
+  Artist.find().sort('name').paginate(page, itemsPerPage, (err, artists, total) => {
+    if (err) return res.status(500).send({ message: `Error en la petición: ${err}` })
+    if (!artists) return res.status(500).send({ message: 'Error al mostrar los artistas :(' })
+    res.status(200).send({ total, artists })
+  })
+}
+
 module.exports = {
   getArtist,
-  saveArtist
+  saveArtist,
+  getArtists
 }
