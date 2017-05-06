@@ -1,6 +1,7 @@
 'use strcict'
 
 const Album = require('../models/album')
+const Song = require('../models/song')
 
 function getAlbum (req, res) {
   const albumId = req.params.id
@@ -54,9 +55,24 @@ function updateAlbum (req, res) {
   })
 }
 
+function deleteAlbum (req, res) {
+  const albumId = req.params.id
+  if (!albumId) return res.status(500).send({ message: 'No se recibió el id' })
+  Album.findByIdAndRemove(albumId, (err, albumRemoved) => {
+    if (err) return res.status(500).send({ message: `Hubo un error al borrar el album: ${err}` })
+    if (!albumRemoved) return res.status(400).send({ message: 'No se pudo borrar el album' })
+    Song.find({ album: albumRemoved._id }).remove((err, songRemoved) => {
+      if (err) return res.status(500).send({ message: `Hubo un error al borrar las canciones del album: ${err}` })
+      if (!songRemoved) return res.status(400).send({ message: 'No hay canciones del album para borrar' })
+      res.status(200).send({ message: 'Album borrado', albumRemoved })
+    })
+  })
+}
+
 module.exports = {
   getAlbum,
   saveAlbum,
   getAlbums,
-  updateAlbum
+  updateAlbum,
+  deleteAlbum
 }
