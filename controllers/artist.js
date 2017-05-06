@@ -54,9 +54,31 @@ function updateArtist (req, res) {
   })
 }
 
+function deleteArtist (req, res) {
+  const artistId = req.params.id
+
+  Artist.findByIdAndRemove(artistId, (err, artistRemoved) => {
+    if (err) return res.status(500).send({ message: `Hubo un error al eliminar el artista: ${err}` })
+    if (!artistRemoved) return res.status(400).send({ message: 'No se pudo elimiar el artista' })
+    Album.find({ artist: artistRemoved._id }).remove((err, albumRemoved) => {
+      if (err) return res.status(500).send({ message: `Hubo un error al eliminar el album del artista: ${err}` })
+      if (!updateArtist) return res.status(400).send({ message: 'No se pudo eliminar el album' })
+      Song.find({ album: albumRemoved._id }).remove((err, songRemoved) => {
+        if (err) return res.status(500).send({ message: `Hubo un error al eliminar las canciones del artista: ${err}` })
+        if (!updateArtist) return res.status(400).send({ message: 'No se pudieron eliminar las canciones del artista' })
+        res.status(200).send({
+          message: 'Artista y su material asociado eliminados',
+          artistRemoved
+        })
+      })
+    })
+  })
+}
+
 module.exports = {
   getArtist,
   saveArtist,
   getArtists,
-  updateArtist
+  updateArtist,
+  deleteArtist
 }
