@@ -75,10 +75,36 @@ function deleteArtist (req, res) {
   })
 }
 
+function uploadImage (req, res) {
+  const artistId = req.params.id
+
+  if (!req.files) return res.status(300).send({ message: 'No se seleccionó ninguna imagen' })
+  const filePath = req.files.image.path.split('\\')
+  const fileName = filePath[2]
+  const extension = fileName.split('.')
+
+  if (extension[1] !== 'png' && extension[1] !== 'jpg') return res.status(400).send({ message: 'La imagen debe ser png o jpeg' })
+  Artist.findByIdAndUpdate(artistId, { image: fileName }, (err, artistUpdated) => {
+    if (err) return res.status(500).send({ message: `Error al subir la imagen: ${err}` })
+    res.status(200).send({ message: 'Artista actualizado', artistUpdated })
+  })
+}
+
+function getImageFile (req, res) {
+  const imageFile = req.params.imageFile
+  const patFile = `./uploads/artists/${imageFile}`
+  fs.exists(patFile, (exists) => {
+    if (!exists) return res.status(404).send({ message: 'No existe la imagen' })
+    res.sendFile(path.resolve(patFile))
+  })
+}
+
 module.exports = {
   getArtist,
   saveArtist,
   getArtists,
   updateArtist,
-  deleteArtist
+  deleteArtist,
+  uploadImage,
+  getImageFile
 }
