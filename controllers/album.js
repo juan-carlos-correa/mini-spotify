@@ -44,8 +44,19 @@ function saveAlbum (req, res) {
   })
 }
 
+function updateAlbum (req, res) {
+  const albumId = req.params.id
+  const update = req.body
+  Album.findByIdAndUpdate(albumId, update, (err, albumUpdated) => {
+    if (err) return res.status(500).send({ message: `Hubo un error al actualizar el album: ${err}` })
+    if (!albumUpdated) return res.status(400).send({ message: 'No se pudo actualizar el album' })
+    res.status(200).send({ message: 'Album actualizado', albumUpdated })
+  })
+}
+
 module.exports = {
   getAlbum,
   saveAlbum,
-  getAlbums
+  getAlbums,
+  updateAlbum
 }
