@@ -3,7 +3,14 @@
 const Album = require('../models/album')
 
 function getAlbum (req, res) {
-  res.status(200).send({ message: 'Album' })
+  const albumId = req.params.id
+  Album.findById(albumId)
+  .populate({path: 'artist'})
+  .exec((err, album) => {
+    if (err) return res.status(500).send({ message: `Error: ${err}` })
+    if (!album) return res.status(404).send({ message: 'No se encontró el album' })
+    res.status(200).send({ message: 'Album encontrado', album })
+  })
 }
 
 function saveAlbum (req, res) {
