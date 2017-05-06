@@ -13,6 +13,20 @@ function getAlbum (req, res) {
   })
 }
 
+function getAlbums (req, res) {
+  const artistId = req.params.id
+
+  const find = !artistId
+  ? Album.find().sort('title')
+  : Album.find({artist: artistId}).sort('year')
+
+  find.populate({path: 'artist'}).exec((err, albums) => {
+    if (err) return res.status(500).send({ message: `Error: ${err}` })
+    if (!albums) return res.status(400).send({ message: 'No hay albums :(' })
+    res.status(200).send({ message: 'Albums', albums })
+  })
+}
+
 function saveAlbum (req, res) {
   let album = new Album()
   const params = req.body
@@ -32,5 +46,6 @@ function saveAlbum (req, res) {
 
 module.exports = {
   getAlbum,
-  saveAlbum
+  saveAlbum,
+  getAlbums
 }
