@@ -67,7 +67,7 @@ function uploadImage (req, res) {
   if (extension[1] !== 'png' && extension[1] !== 'jpg') return res.status(400).send({ message: 'La imagen debe ser png o jpeg' })
   User.findByIdAndUpdate(userId, { imagen: fileName }, (err, userUpdated) => {
     if (err) return res.status(500).send({ message: `Error al subir el avatar: ${err}` })
-    res.status(200).send({ message: 'Avatar actualizado', userUpdated })
+    res.status(200).send({ message: 'Avatar actualizado', fileName, userUpdated })
   })
 }
 
