@@ -46,8 +46,20 @@ function saveSong (req, res) {
   })
 }
 
+function updateSong (req, res) {
+  const songId = req.params.id
+  if (!songId) return res.status(500).send({ message: 'No se recibió el id' })
+  const update = req.body
+  Song.findByIdAndUpdate(songId, update, (err, songUpdated) => {
+    if (err) return res.status(500).send({ message: `Error: ${err}` })
+    if (!songUpdated) return res.status(400).send({ message: 'No se actualizó la canción' })
+    res.status(200).send({ message: 'Canción actualizada', songUpdated })
+  })
+}
+
 module.exports = {
   getSong,
   saveSong,
-  getSongs
+  getSongs,
+  updateSong
 }

@@ -8,5 +8,6 @@ const mdAuth = require('../middlewares/authenticated')
 api.get('/song/:id', mdAuth.ensureAuth, SongController.getSong)
 api.get('/songs/:id?', mdAuth.ensureAuth, SongController.getSongs)
 api.post('/song', mdAuth.ensureAuth, SongController.saveSong)
+api.put('/song/:id', mdAuth.ensureAuth, SongController.updateSong)
 
 module.exports = api
