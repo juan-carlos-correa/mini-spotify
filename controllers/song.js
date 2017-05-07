@@ -3,7 +3,13 @@
 const Song = require('../models/song')
 
 function getSong (req, res) {
-  res.status(200).send({ message: 'Ok' })
+  const songId = req.params.id
+  if (!songId) return res.status(500).send({ message: 'No se recibió el id' })
+  Song.findById(songId).populate({ path: 'album' }).exec((err, song) => {
+    if (err) return res.status(400).send({ message: `Error: ${err}` })
+    if (!song) return res.status(404).send({ message: 'La canción no existe' })
+    res.status(200).send({ message: 'Canción encontrada', song })
+  })
 }
 
 function saveSong (req, res) {
