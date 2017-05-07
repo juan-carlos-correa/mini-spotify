@@ -12,6 +12,24 @@ function getSong (req, res) {
   })
 }
 
+function getSongs (req, res) {
+  const albumId = req.params.album
+  const find = !albumId
+  ? Song.find().sort('number')
+  : Song.find({album: albumId}).sort('number')
+  find.populate({
+    path: 'album',
+    populate: {
+      path: 'artist',
+      model: 'Artists'
+    }
+  }).exec((err, songs) => {
+    if (err) return res.status(500).send({ message: `Hubo un error: ${err}` })
+    if (!songs) return res.status(400).send({ message: 'No hay canciones' })
+    res.status(200).send({ message: 'Canciones obtenidas', songs })
+  })
+}
+
 function saveSong (req, res) {
   let song = new Song()
 
@@ -30,5 +48,6 @@ function saveSong (req, res) {
 
 module.exports = {
   getSong,
-  saveSong
+  saveSong,
+  getSongs
 }
