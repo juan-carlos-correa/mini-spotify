@@ -57,9 +57,20 @@ function updateSong (req, res) {
   })
 }
 
+function removeSong (req, res) {
+  const songId = req.params.id
+  if (!songId) return res.status(500).send({ message: 'No se recibió el id' })
+  Song.findByIdAndRemove(songId, (err, songRemoved) => {
+    if (err) return res.status(500).send({ message: `Error: ${err}` })
+    if (!songRemoved) return res.status(400).send({ message: 'No se borró la canción' })
+    res.status(200).send({ message: 'Canción borrada', songRemoved })
+  })
+}
+
 module.exports = {
   getSong,
   saveSong,
   getSongs,
-  updateSong
+  updateSong,
+  removeSong
 }
