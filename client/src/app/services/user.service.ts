@@ -13,8 +13,15 @@ export class UserService{
     this.url = config.url;
   }
 
-  public signUp(){
-    return 'test';
+  public signUp(user, hash = null){
+    if(hash) user.hash = hash;
+    let json = JSON.stringify(user);
+    let params = json;
+
+    let headers = new Headers({'Content-Type': 'application/json'});
+
+    return this._http.post(this.url + 'login', params, {headers: headers})
+                      .map(res => res.json());
   }
 
 }

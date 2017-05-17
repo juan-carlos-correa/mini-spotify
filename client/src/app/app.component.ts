@@ -15,16 +15,28 @@ export class AppComponent implements OnInit{
   public user: User;
   public identity;
   public token;
+  public errorMessage;
 
   constructor(private _userService: UserService){
     this.user = new User('','','','','ROLE_USER','');
   }
 
   ngOnInit(){
-    console.log(this._userService.signUp());
+    
   }
 
   public onSubmit(){
     console.log(this.user);
+    this._userService.signUp(this.user).subscribe(
+      res => {
+        this.errorMessage = null;
+        this.identity = res.token;
+      },
+      err => {
+          const body = JSON.parse(err._body);
+          this.errorMessage = body.message;
+          console.log(this.errorMessage);
+      }
+    )
   }
 }
