@@ -22,7 +22,8 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(){
-    
+    this.identity = this._userService.getIdentity();
+    this.token = this._userService.getToken();
   }
 
   public onSubmit(){
@@ -30,7 +31,12 @@ export class AppComponent implements OnInit{
     this._userService.signUp(this.user).subscribe(
       res => {
         this.errorMessage = null;
-        this.identity = res.token;
+        this.token = res.token;
+        this.identity = res.user;
+        localStorage.setItem('token', this.token);
+        localStorage.setItem('identity', JSON.stringify(this.identity));
+        console.log(this.identity);
+        console.log(this.token);
       },
       err => {
           const body = JSON.parse(err._body);

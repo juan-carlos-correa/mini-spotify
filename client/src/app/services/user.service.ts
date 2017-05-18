@@ -24,4 +24,14 @@ export class UserService{
                       .map(res => res.json());
   }
 
+  getIdentity(){
+    let identity = JSON.parse(localStorage.getItem('identity'));
+    return identity;
+  }
+
+  getToken(){
+    let token = localStorage.getItem('token');
+    return token;
+  }
+
 }
