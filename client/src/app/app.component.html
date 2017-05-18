@@ -1,11 +1,13 @@
-<div *ngIf="identity" class="navigation col-lg-1">
+<div *ngIf="identity" class="col-lg-1">
   <h1>
     {{title}}
   </h1>
 </div>
-
+<div class="clearfix"></div>
 <div *ngIf="identity" class="central col-lg-11">
   <p>Estás logueado :)</p>
+  {{this.identity.name}} {{this.identity.surname}}
+  <span class="btn btn-info" (click)="logout()"> Cerrar sesión </span>
 </div>
 
 <div class="col-lg-12" *ngIf="!identity">

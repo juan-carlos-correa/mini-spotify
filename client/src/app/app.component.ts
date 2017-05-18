@@ -35,8 +35,6 @@ export class AppComponent implements OnInit{
         this.identity = res.user;
         localStorage.setItem('token', this.token);
         localStorage.setItem('identity', JSON.stringify(this.identity));
-        console.log(this.identity);
-        console.log(this.token);
       },
       err => {
           const body = JSON.parse(err._body);
@@ -44,5 +42,11 @@ export class AppComponent implements OnInit{
           console.log(this.errorMessage);
       }
     )
+  }
+
+  public logout(){
+    localStorage.clear();
+    this.identity = null;
+    this.token = null;
   }
 }
