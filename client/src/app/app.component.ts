@@ -13,12 +13,14 @@ import { UserService } from './services/user.service'
 export class AppComponent implements OnInit{
   public title = 'MusicFree';
   public user: User;
+  public newUser: User;
   public identity;
   public token;
   public errorMessage;
 
   constructor(private _userService: UserService){
-    this.user = new User('','','','','ROLE_USER','');
+    this.user = new User('','ROLE_USER', '', '','','','');
+    this.newUser = new User('','ROLE_USER', '', '','','','');
   }
 
   ngOnInit(){
@@ -26,7 +28,7 @@ export class AppComponent implements OnInit{
     this.token = this._userService.getToken();
   }
 
-  public onSubmit(){
+  public onSubmitSigin(){
     console.log(this.user);
     this._userService.signUp(this.user).subscribe(
       res => {
@@ -44,9 +46,15 @@ export class AppComponent implements OnInit{
     )
   }
 
+  public onSubmitSignup(){
+    console.log(this.newUser);
+  }
+
   public logout(){
     localStorage.clear();
     this.identity = null;
     this.token = null;
+    this.user.email = null;
+    this.user.password = null;
   }
 }
