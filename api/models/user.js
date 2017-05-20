@@ -6,9 +6,9 @@ const Schema = mongoose.Schema
 const UserSchema = Schema({
   name: String,
   surname: String,
-  email: String,
+  email: { type: String, unique: true, lowercase: true },
   password: { type: String, select: false },
-  role: String,
+  role: {type: String, enum: ['ROLE_USER', 'ROLE_ADMIN']},
   imagen: String
 })
 

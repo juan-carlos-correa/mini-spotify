@@ -17,13 +17,13 @@ function saveUser (req, res) {
   user.name = params.name
   user.surname = params.surname
   user.email = params.email
-  user.role = 'ROLE_ADMIN'
+  user.role = 'ROLE_USER'
   user.image = 'null'
   bcrypt.hash(params.password, null, null, (err, hash) => {
     if (err) return new Error(`Error al encriptar password: ${err}`)
     user.password = hash
     user.save((err, userStored) => {
-      if (err) res.status(400).send({ message: 'error', err })
+      if (err) return res.status(400).send({ message: 'error', err })
       res.status(200).send({ message: 'ok', userStored })
     })
   })

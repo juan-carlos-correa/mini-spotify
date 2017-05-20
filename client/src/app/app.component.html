@@ -15,7 +15,7 @@
     <h1>Sign in</h1>
     
     <form #signInForm="ngForm" (ngSubmit)="onSubmitSigin()" class="col-md-10">
-      <div *ngIf="errorMessage" class="alert alert-danger">
+      <div *ngIf="errorMessageSignup" class="alert alert-danger">
         <strong>Error!</strong> {{errorMessage}}
       </div>
       <p>
@@ -26,7 +26,7 @@
       <p>
         <label for="">Password</label>
         <input type="password" #passwordSignin="ngModel" name="passwordSignin" [(ngModel)]="user.password" class="form-control" required>
-        <span class="text-danger" *ngIf="!passwordSignin.valid && passwordSignin.touched">Email is required</span>
+        <span class="text-danger" *ngIf="!passwordSignin.valid && passwordSignin.touched">Password is required</span>
       </p>
       <input type="submit" value="Sign in" class="btn btn-primary">
     </form>
@@ -35,6 +35,9 @@
   <div class="col-lg-6">
     <h1>Sign up</h1>
     <form #signUpForm="ngForm" (ngSubmit)="onSubmitSignup()" class="col-md-10">
+      <div *ngIf="errorMessageSignin" class="alert alert-danger">
+        <strong>Error!</strong> {{errorMessageSignin}}
+      </div>
       <p>
         <label for="">Name</label>
         <input type="text" #name="ngModel" name="name" [(ngModel)]="newUser.name" class="form-control" required>

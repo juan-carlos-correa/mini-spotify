@@ -16,7 +16,8 @@ export class AppComponent implements OnInit{
   public newUser: User;
   public identity;
   public token;
-  public errorMessage;
+  public errorMessageSignup;
+  public errorMessageSignin;
 
   constructor(private _userService: UserService){
     this.user = new User('','ROLE_USER', '', '','','','');
@@ -30,9 +31,9 @@ export class AppComponent implements OnInit{
 
   public onSubmitSigin(){
     console.log(this.user);
-    this._userService.signUp(this.user).subscribe(
+    this._userService.signIn(this.user).subscribe(
       res => {
-        this.errorMessage = null;
+        this.errorMessageSignup = null;
         this.token = res.token;
         this.identity = res.user;
         localStorage.setItem('token', this.token);
@@ -40,14 +41,27 @@ export class AppComponent implements OnInit{
       },
       err => {
           const body = JSON.parse(err._body);
-          this.errorMessage = body.message;
-          console.log(this.errorMessage);
+          this.errorMessageSignup = body.message;
+          console.log(this.errorMessageSignup);
       }
     )
   }
 
   public onSubmitSignup(){
     console.log(this.newUser);
+    this._userService.signUp(this.newUser).subscribe(
+      res => {
+        console.log(res);
+        this.errorMessageSignin = null;
+        alert(`Dado de alta con el correo: ${this.newUser.email}`);
+        this.newUser = new User('','ROLE_USER', '', '','','','');
+      },
+      err => {
+          const body = JSON.parse(err._body);
+          this.errorMessageSignin = body.message;
+          console.log(this.errorMessageSignin);
+      }
+    )
   }
 
   public logout(){
@@ -56,5 +70,7 @@ export class AppComponent implements OnInit{
     this.token = null;
     this.user.email = null;
     this.user.password = null;
+    this.errorMessageSignin = null;
+    this.errorMessageSignup = null;
   }
 }

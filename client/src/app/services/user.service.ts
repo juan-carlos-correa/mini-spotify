@@ -13,14 +13,17 @@ export class UserService{
     this.url = config.url;
   }
 
-  public signUp(user, hash = null){
-    if(hash) user.hash = hash;
-    let json = JSON.stringify(user);
-    let params = json;
-
+  public signIn(user){
+    let params = JSON.stringify(user);
     let headers = new Headers({'Content-Type': 'application/json'});
-
     return this._http.post(this.url + 'login', params, {headers: headers})
+                      .map(res => res.json());
+  }
+
+  public signUp(user){
+    let params = JSON.stringify(user);
+    let headers = new Headers({'Content-Type': 'application/json'});
+    return this._http.post(this.url + 'register', params, {headers: headers})
                       .map(res => res.json());
   }
 
